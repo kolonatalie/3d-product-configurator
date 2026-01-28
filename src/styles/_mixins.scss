@@ -1,0 +1,43 @@
+@use "variables" as *;
+@use 'sass:map';
+
+@mixin content($max-width: $max-width-content) {
+  width: 100%;
+  max-width: $max-width;
+  height: auto;
+  padding-right: $space-sm;
+  padding-left: $space-sm;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+$breakpoints: (
+  'tablet': 768px,
+  'desktop': 1024px,
+  'wide': 1440px
+);
+
+@mixin screen($device) {
+  $size: map.get($breakpoints, $device);
+
+  @if $size {
+    @media screen and (min-width: $size) {
+      @content;
+    }
+  } @else {
+    @error "Unknown device: #{$device}.";
+  }
+}
+
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin glass {
+  background: oklch(100% 0 0deg / 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid oklch(100% 0 0deg / 0.2);
+}

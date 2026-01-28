@@ -1,0 +1,52 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $clr-text;
+  background-color: $clr-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-bottom: $space-md;
+  font-weight: 700;
+  line-height: 1.1;
+  color: $clr-black;
+  letter-spacing: -0.02rem;
+}
+
+// Typography Scale: Major Third (1.25)
+h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+p {
+  max-width: 65ch;
+  margin-bottom: $space-md;
+}
+
+.section {
+  @include content;
+
+  padding: 0 $space-sm;
+  margin: $space-xxl auto;
+
+  @include screen('tablet') {
+    padding: 0 $space-lg;
+  }
+}

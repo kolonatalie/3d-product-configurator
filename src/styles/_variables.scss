@@ -1,0 +1,41 @@
+// --- Colors ---
+$clr-primary: oklch(60% 0.17 307deg);
+$clr-secondary: oklch(86% 0.08 225deg);
+$clr-bg: oklch(97% 0.01 240deg);
+$clr-text: oklch(20% 0.02 240deg);
+$clr-white: oklch(100% 0 0deg);
+$clr-black: oklch(15% 0 0deg);
+
+// --- Shadows --- 
+$light-shadow: 0 5px 15px oklch(0% 0 0deg / 0.1);
+$dark-shadow: 0 10px 25px oklch(0% 0 0deg / 0.2);
+
+// --- Spacing & Layout ---
+$max-width-content: 1300px;
+$font-size-base: 1rem;
+$space-xs: 0.5rem;   // 8px
+$space-sm: 1rem;     // 16px
+$space-md: 1.25rem;  // 20px
+$space-lg: 1.5rem;   // 24px
+$space-xl: 2.5rem;   // 40px
+$space-xxl: 3rem;    // 48px
+$radius: 0.5rem;
+
+// --- Z-Index ---
+$z-negative: -10;
+$z-base: 1;
+$z-header: 100;
+$z-dropdown: 200;
+$z-modal: 1000;
+
+// --- Animations ---
+$transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+
+// Export to CSS Variables
+:root {
+  --clr-primary: #{$clr-primary};
+  --radius:      #{$radius};
+  --max-width:   #{$max-width-content};
+}
