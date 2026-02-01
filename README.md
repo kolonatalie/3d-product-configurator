@@ -1,75 +1,43 @@
-[![React + GSAP + TypeScript Starter Kit](/src/assets/demo.gif)](https://github.com/kolonatalie/react-ts-gsap-starter-kit)
-# React + GSAP + TypeScript Starter Kit
+[![3D Sofa Configurator](/src/assets/demo-sofa.gif)](https://github.com/kolonatalie/3d-product-configurator)
+# 3D Sofa Configurator
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-20232A?style=for-the-badge&logo=threejs&logoColor=white)
 ![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Sass (SCSS)](https://img.shields.io/badge/Sass(SCSS)-hotpink?style=for-the-badge&logo=sass&logoColor=white)
 
-Professional boilerplate for high-performance web animations and scalable frontend architecture featuring Vite, ESLint 9, and SASS Modules.
+
+A high-performance, photorealistic 3D product customizer built with React, Three.js, and TypeScript. It features a modular 3D engine, PBR materials, and real-time performance optimization.
 
 ## Features
--  Powered by **Vite** for near-instant HMR (Hot Module Replacement).
-
-- Pre-configured with **GSAP** and **@gsap/react** for optimized animation lifecycles.
-
-- **SASS** Modules (7-1 pattern) with native **OKLCH** color space support.
-
-- Strict Quality Gates:
-
-    - Husky-powered pre-commit hooks running **ESLint 9** and **Stylelint**.
-
-- Pre-defined **path aliases** (`@/*`) and atomic folder structure.
-
-## 📁 Project Structure
-```
-src/
-├── assets/      # Static assets (fonts, images)
-├── components/  # Atomic UI components (with .module.scss)
-├── hooks/       # Custom React & GSAP hooks
-├── styles/      # Global SCSS (reset, base, variables, mixins)
-├── utils/       # Helper functions & math utilities
-└── main.tsx     # Application entry point
-
-```
+- **Real-time Customization:** Swap textures (fabric) and colors (wood) instantly using a custom PBR-ready system.
+- **Photorealistic Rendering:** Powered by RoomEnvironment, ACES Filmic tone mapping, and Bloom post-processing.
+- **Performance First:** Maintains stable 60 FPS with only 1 Draw Call for the main model.
+- **Memory Efficiency:** Strict disposal of geometries and materials to prevent memory leaks.
+- **Screenshot Engine:** Built-in tool to capture customized designs.
 
 ## Tech Stack
+- **Frontend:** React 18 / TypeScript / Vite
+- **3D Engine:** Three.js (WebGL)
+- **Animation:** GSAP
+- **Styling:** Sass (SCSS)
 
-* **Core:** React 18, TypeScript 5, Vite
-* **Animation:** GSAP, @gsap/react
-* **Styles:** SASS Modules, OKLCH, PostCSS
-* **Quality:** ESLint 9, Stylelint, Husky
 
+## Installation
+```Bash
+# Clone the repository
+git clone https://github.com/kolonatalie/3d-product-configurator
 
-##  Getting Started
+# Install dependencies
+npm install --legacy-peer-deps
 
-1.  **Clone the repository:**
-    
-    `git clone` [`https://github.com/kolonatalie/react-ts-gsap-starter-kit.git`](https://github.com/kolonatalie/react-ts-gsap-starter-kit.git)
+# Start development server
+git init && npx husky install
+npm run dev
+```
 
-    ```bash
-    cd react-ts-gsap-starter-kit
-    ```
-
-2.  **Install:**
-    ```bash
-    npm install --legacy-peer-deps
-    ```
-    ***Note:** `--legacy-peer-deps` is required for ESLint 9 compatibility with some plugins.*
-
-3. **Initialize & Run:**
-    ```bash
-    git init && npx husky install
-    npm run dev
-    ```
-
-## Demo Component
-This starter kit includes a pre-built `Hero` component located in `src/components/Hero`. It serves as a live demonstration of:
-- **GSAP Reveal Animation:** Using `useGSAP` hook and scoped selectors.
-- **Fluid Typography:** Implementation of `clamp()` and OKLCH color system.
-- **SASS Modules:** Scoped styling with the 7-1 pattern.
-
-**To start with a blank slate:** Simply delete the `src/components/Hero` folder and clear the `App.tsx` file.
 
 ## Available Scripts
 |  |  |
@@ -82,4 +50,18 @@ This starter kit includes a pre-built `Hero` component located in `src/component
 
 ---
 
-*Created by [kolonatalie](https://github.com/kolonatalie) • Connect: [LinkedIn](https://www.linkedin.com/in/kolonatalie/) | [Portfolio](https://kolonatalie.github.io/portfolio/)*
+## Connect with Me
+
+I'm always open to feedback, collaboration, and connecting with fellow developers.
+
+[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-563D6F?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kolonatalie/)
+[![X Badge](https://img.shields.io/badge/X-8A62B3?style=for-the-badge&logo=x&logoColor=white)](https://x.com/dev_kolonatalie)
+[![Bluesky Badge](https://img.shields.io/badge/Bluesky-A575D4?style=for-the-badge&logo=bluesky&logoColor=white)](https://bsky.app/profile/kolonatalie.bsky.social)
+[![Mastodon Badge](https://img.shields.io/badge/Mastodon-704F91?style=for-the-badge&logo=mastodon&logoColor=white)](https://mastodon.social/@kolonatalie)
+[![GitHub Badge](https://img.shields.io/badge/GitHub-3D2B4F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kolonatalie)
+
+---
+
+**`Keywords & Topics`**
+
+`threejs`, `webgl`, `gsap`, `typescript`, `react`, `pbr`, `3d-configurator`, `performance`, `creative-coding`, `frontend-engineering`, `web-animation`, `3d-visualization`

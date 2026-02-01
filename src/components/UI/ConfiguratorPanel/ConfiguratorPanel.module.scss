@@ -1,0 +1,73 @@
+.panel {
+  position: absolute;
+  right: 50%;
+  bottom: 25%;
+  gap: $space-md;
+  padding: $space-lg;
+  border-radius: calc($radius * 2);
+  box-shadow: $dark-shadow;
+  transform: translate(50%, 50%);
+
+  @include flex-center;
+  @include glass;
+
+
+  @include screen(tablet) {
+    right: 0;
+    bottom: 50%;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 150px;
+    padding: $space-md;
+    transform: translate(0, 50%);
+  }
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: bold;
+  color: $clr-text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  gap: $space-xs;
+
+  @include screen(tablet) {
+    flex-wrap: wrap;
+  }
+}
+
+.swatch,
+.swatchWood {
+  width: $icon-sm;
+  height: $icon-sm;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px white;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border: 3px solid $clr-black;
+    transform: scale(1.2);
+  }
+}
+
+.swatchWood {
+  background-image: url('/textures/wood_texture.webp');
+  background-size: cover;
+  background-blend-mode: multiply;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.screenshotBtn {
+  @include flex-center(column, space-between, center);
+}

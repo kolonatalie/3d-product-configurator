@@ -1,0 +1,23 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+footer {
+  position: absolute;
+  bottom: 0;
+  padding: $space-xs $space-md;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0.6;
+
+  @include flex-center;
+
+  p {
+    margin: 0;
+    font-size: calc($font-size-base / 1.25);
+  }
+
+  a {
+    font-weight: bold;
+    color: $clr-primary;
+  }
+}

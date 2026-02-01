@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kolonatalie.github.io/portfolio/sitemap.xml

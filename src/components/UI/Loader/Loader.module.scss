@@ -1,0 +1,28 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.loaderContainer {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  font-family: sans-serif;
+
+  @include flex-center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 15px;
+  border: 2px solid $clr-primary-20;
+  border-top-color: $clr-black;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

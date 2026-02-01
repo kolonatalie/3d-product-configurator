@@ -1,0 +1,38 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background:
+    linear-gradient(235deg, $clr-primary-20, transparent 50%),
+    linear-gradient(200deg, $clr-white, transparent 90%),
+    linear-gradient(336deg, $clr-secondary, transparent 30%);
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  max-width: $max-width-content;
+  padding: 2rem 0;
+}
+
+.overlay {
+  z-index: 1;
+  color: $clr-text;
+  text-align: center;
+  pointer-events: none;
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: $space-xs 0 0;
+    opacity: 0.5;
+  }
+}

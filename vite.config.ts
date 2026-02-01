@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  assetsInclude: ['**/*.glb', '**/*.gltf'],
   resolve: {
     alias: {
       '@': path.resolve(process.cwd(), './src'),
@@ -28,6 +29,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'gsap'],
+          three: ['three']
         },
       },
     },
