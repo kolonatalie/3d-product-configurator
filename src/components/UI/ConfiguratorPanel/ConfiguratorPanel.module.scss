@@ -1,14 +1,15 @@
 .panel {
   position: absolute;
   right: 50%;
-  bottom: 25%;
+  bottom: 20%;
   gap: $space-md;
+  width: 80%;
   padding: $space-lg;
   border-radius: calc($radius * 2);
   box-shadow: $dark-shadow;
   transform: translate(50%, 50%);
 
-  @include flex-center;
+  @include flex-center(row, center, start);
   @include glass;
 
 
@@ -33,12 +34,8 @@
 
 .grid {
   display: flex;
-  flex-direction: row;
-  gap: $space-xs;
-
-  @include screen(tablet) {
-    flex-wrap: wrap;
-  }
+  flex-flow: row wrap;
+  gap: $space-sm;
 }
 
 .swatch,

@@ -6,7 +6,7 @@ export const Loader: React.FC<{ progress: number }> = ({ progress }) => {
     <div className={styles.loaderContainer}>
       <div className={styles.content}>
         <div className={styles.spinner} />
-        <p>Loading Experience: {Math.round(progress)}%</p>
+        <p>Loading Experience: {Math.min(Math.round(progress), 100)}%</p>
       </div>
     </div>
   );

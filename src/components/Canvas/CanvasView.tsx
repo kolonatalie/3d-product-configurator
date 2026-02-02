@@ -3,9 +3,10 @@ import * as THREE from 'three';
 import { SceneManager } from '@/engine/SceneManager';
 import { ModelLoader } from '@/engine/ModelLoader';
 import { Loader } from '@/components/UI/Loader/Loader';
-import sofaModelPath from '../../../public/models/sofa.glb';
 import styles from './CanvasView.module.scss';
 import { gsap } from 'gsap';
+
+const sofaModelPath = '/models/sofa.glb';
 
 interface CanvasViewProps {
   onLoad: (model: THREE.Group) => void;
@@ -28,11 +29,11 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
 
     const loader = new ModelLoader();
 
-    loader.loadModel(sofaModelPath, setProgress).then(({ model, scale }) => {
 
+    const ctx = gsap.context(() => {
+    loader.loadModel(sofaModelPath, setProgress).then(({ model, scale }) => {
       model.scale.set(0, 0, 0);
       manager.add(model);
-
       setIsLoading(false);
 
       gsap.to(model.scale, {
@@ -41,9 +42,10 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
         z: scale,
         duration: 1,
         ease: 'power4.out',
-        delay: 0.1,
+        // delay: 0.1,
         onComplete: () => onLoad(model)
       });
+    });
     });
 
     const handleResize = () => manager.resize();
@@ -51,6 +53,7 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      ctx.revert();
       manager.dispose();
       sceneManagerRef.current = null;
       onReady(null);
@@ -58,9 +61,13 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
   }, [onLoad, onReady]);
 
   return (
-    <>
-      {isLoading && <Loader progress={progress} />}
+    <div className={styles.canvasContainer}>
+      {isLoading && (
+        <div className={styles.loaderOverlay}>
+           <Loader progress={progress} />
+        </div>
+      )}
       <canvas ref={canvasRef} className={styles.canvas} />
-    </>
+    </div>
   );
 };

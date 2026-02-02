@@ -2,8 +2,7 @@ header {
   z-index: $z-header;
   width: 100vw;
   max-width: $max-width-content;
-  padding: $space-sm $space-lg;
-  margin: $space-xs 0 0;
+  padding: $space-sm $space-xs;
 
   @include flex-center(row, space-between, center);
 }
@@ -18,7 +17,6 @@ header {
   width: auto;
   min-width: 45px;
   max-width: 80px;
-  padding: $space-sm;
   font-size: $font-size-base;
   font-weight: bolder;
   color: $clr-primary;
@@ -44,7 +42,6 @@ header {
 
   &.showLinks {
     max-width: 90vw;
-    padding: $space-sm $space-lg;
 
     ul {
       max-width: 100%;
@@ -98,6 +95,6 @@ header {
   width: 90%;
   height: 0.2rem;
   background-color: $clr-primary;
-  border-radius: 25%;
+  border-radius: 0.2rem;
   transition: transform 0.8s ease, opacity 0.3s 0.1s ease;
 }

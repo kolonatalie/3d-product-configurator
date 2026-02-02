@@ -1,5 +1,5 @@
-[![3D Sofa Configurator](/src/assets/demo-sofa.gif)](https://github.com/kolonatalie/3d-product-configurator)
-# 3D Sofa Configurator
+[![3D Sofa Configurator](/src/assets/demo-sofa.gif)](https://3d-sofa-configurator.vercel.app)
+# 3D Sofa Configurator | [Live Demo](https://3d-sofa-configurator.vercel.app)
 
 ![Three.js](https://img.shields.io/badge/Three.js-20232A?style=for-the-badge&logo=threejs&logoColor=white)
 ![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)

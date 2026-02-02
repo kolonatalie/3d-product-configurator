@@ -25,7 +25,7 @@ const App: React.FC = () => {
           <h1>3D Sofa Configurator</h1>
           <p>Click and drag to rotate • Scroll to zoom</p>
         </div>
-        <Suspense fallback={<Loader progress={0} />}>
+        <Suspense fallback={<div className={styles.loaderOverlay}><Loader progress={0} /></div>}>
           <CanvasView
             onLoad={handleModelLoad}
             onReady={setSceneManager}
