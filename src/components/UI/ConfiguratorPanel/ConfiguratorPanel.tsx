@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { SceneManager } from '@/engine/SceneManager';
 import { changePartColor, changePartTexture, downloadScreenshot, resetPartToOriginal } from '@/engine/Configurator';
-import * as THREE from 'three';
+import { Group } from 'three';
 import { FABRIC_OPTIONS, WOOD_OPTIONS } from '@/constants/configuratorData';
 import { ScreenshotIcon } from '../Icons';
 import styles from './ConfiguratorPanel.module.scss';
 
 interface ConfiguratorProps {
-  model: THREE.Group | null;
+  model: Group | null;
   sceneManager: SceneManager | null;
 }
 

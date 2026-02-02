@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import path from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
@@ -13,6 +13,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
         additionalData: `@use "@/styles/_variables.scss" as *; @use "@/styles/_mixins.scss" as *;`,
       },
     },
@@ -24,14 +25,18 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'gsap'],
-          three: ['three']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('three')) return 'vendor-three';
+            if (id.includes('gsap')) return 'vendor-gsap';
+            return 'vendor-core';
+          }
         },
       },
     },
+    chunkSizeWarningLimit: 600,
   },
 });

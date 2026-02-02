@@ -12,7 +12,11 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <a href='https://github.com/kolonatalie' target='blank'>
+        <a
+          href='https://github.com/kolonatalie' target='_blank'
+          rel='noopener noreferrer'
+          aria-label="Visit Natalie's GitHub profile"
+        >
           <LogoIcon
             size={35}
             className={styles.icon} />
@@ -20,7 +24,7 @@ export const Header = () => {
       </div>
       <nav className={`${styles.nav} ${isOpen ? styles.showLinks : ''}`}>
         <ul>
-          <li><a href="https://github.com/kolonatalie/3d-product-configurator" target='blank'>Code</a></li>
+          <li><a href="https://github.com/kolonatalie/3d-product-configurator" target='_blank'>Code</a></li>
         </ul>
         <button
           className={`${styles.navToggle} ${isOpen ? styles.active : ''}`}

@@ -1,4 +1,19 @@
-import * as THREE from 'three';
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Vector2,
+  AmbientLight,
+  DirectionalLight,
+  PlaneGeometry,
+  ShadowMaterial,
+  Mesh,
+  SRGBColorSpace,
+  ACESFilmicToneMapping,
+  PCFSoftShadowMap,
+  PMREMGenerator,
+  Object3D
+} from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
@@ -10,19 +25,18 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import Stats from 'stats.js';
 
 export class SceneManager {
-  private scene: THREE.Scene;
-  private camera: THREE.PerspectiveCamera;
-  private renderer: THREE.WebGLRenderer;
-  private controls: OrbitControls;
+  private readonly scene: Scene;
+  private readonly camera: PerspectiveCamera;
+  private readonly renderer: WebGLRenderer;
+  private readonly controls: OrbitControls;
   private frameId: number | null = null;
-  private composer: EffectComposer;
-  private stats?: Stats;
+  private readonly composer: EffectComposer;
+  private readonly stats?: Stats;
 
   constructor(canvas: HTMLCanvasElement) {
-    this.scene = new THREE.Scene();
-    // this.scene.background = new THREE.Color('#dbe6ea');
+    this.scene = new Scene();
 
-    this.camera = new THREE.PerspectiveCamera(
+    this.camera = new PerspectiveCamera(
       40,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
@@ -30,25 +44,23 @@ export class SceneManager {
     );
     this.camera.position.set(5, 2, 2);
 
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       canvas,
       antialias: true,
       alpha: true,
       powerPreference: "high-performance",
     });
 
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(globalThis.devicePixelRatio, 2));
     this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.outputColorSpace = SRGBColorSpace;
+    this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.65;
-
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
 
-
-    const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+    const pmremGenerator = new PMREMGenerator(this.renderer);
     this.scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
     this.composer = new EffectComposer(this.renderer);
@@ -57,7 +69,7 @@ export class SceneManager {
     this.composer.addPass(renderPass);
 
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
+      new Vector2(canvas.clientWidth, canvas.clientHeight),
       0.1, // Strength
       0.3,  // Radius
       0.97  // Threshold
@@ -67,7 +79,7 @@ export class SceneManager {
     const outputPass = new OutputPass();
     this.composer.addPass(outputPass);
 
-    const isDebug = new URLSearchParams(window.location.search).get('debug') === 'true';
+    const isDebug = new URLSearchParams(globalThis.location.search).get('debug') === 'true';
 
     if (isDebug) {
       this.stats = new Stats();
@@ -79,7 +91,6 @@ export class SceneManager {
     }
 
     this.initLights();
-
     this.controls = new OrbitControls(this.camera, canvas);
     this.controls.target.set(0, 0.5, 0);
     this.controls.update();
@@ -88,15 +99,13 @@ export class SceneManager {
 
     this.animate();
     this.initFloor();
-
-    //this.scene.add(new THREE.AxesHelper(5));
   }
 
   private initLights() {
-    const ambientLight = new THREE.AmbientLight('#ffffff', 0.1);
+    const ambientLight = new AmbientLight('#ffffff', 0.1);
     this.scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight('#ffffff', 0.5);
+    const sunLight = new DirectionalLight('#ffffff', 0.5);
     sunLight.position.set(5, 8, 5);
     sunLight.castShadow = true;
 
@@ -115,15 +124,15 @@ export class SceneManager {
   }
 
   private initFloor() {
-    const planeGeometry = new THREE.PlaneGeometry(20, 20);
-    const planeMaterial = new THREE.ShadowMaterial({
+    const planeGeometry = new PlaneGeometry(20, 20);
+    const planeMaterial = new ShadowMaterial({
       opacity: 0.1,
     });
 
-    const floor = new THREE.Mesh(planeGeometry, planeMaterial);
+    const floor = new Mesh(planeGeometry, planeMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = 0;
-    floor.receiveShadow = true; 
+    floor.receiveShadow = true;
 
     this.scene.add(floor);
   }
@@ -134,18 +143,15 @@ export class SceneManager {
   }
 
 
-  private animate = () => {
+  private readonly animate = () => {
     this.stats?.begin();
-
-    this.frameId = requestAnimationFrame(this.animate);
+    this.frameId = globalThis.requestAnimationFrame(this.animate);
     this.controls.update();
     this.composer.render();
-
     this.stats?.end();
-    // console.log('Draw calls:', this.renderer.info.render.calls);
   };
 
-  public add(object: THREE.Object3D) {
+  public add(object: Object3D) {
     this.scene.add(object);
   }
 
@@ -164,16 +170,13 @@ export class SceneManager {
   }
 
   public dispose() {
-    if (this.frameId) cancelAnimationFrame(this.frameId);
+    if (this.frameId) globalThis.cancelAnimationFrame(this.frameId);
 
-    if (this.stats?.dom.parentElement) {
-      this.stats.dom.parentElement.removeChild(this.stats.dom);
-    }
+    this.stats?.dom.remove();
 
     this.scene.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
+      if (object instanceof Mesh) {
         object.geometry.dispose();
-
         if (Array.isArray(object.material)) {
           object.material.forEach(mat => mat.dispose());
         } else {
@@ -185,5 +188,6 @@ export class SceneManager {
     this.controls.dispose();
     this.renderer.dispose();
     this.scene.clear();
+    this.scene.environment?.dispose();
   }
 }

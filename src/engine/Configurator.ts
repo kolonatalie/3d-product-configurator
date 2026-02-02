@@ -1,4 +1,13 @@
-import * as THREE from 'three';
+import {
+  Object3D,
+  Group,
+  Mesh,
+  Material,
+  RepeatWrapping,
+  MeshStandardMaterial,
+  Color
+} from 'three';
+
 import { gsap } from 'gsap';
 import { textureManager } from './TextureManager';
 import { SceneManager } from './SceneManager';
@@ -6,7 +15,7 @@ import { SceneManager } from './SceneManager';
 
 type MaterialMapKeys = 'map' | 'normalMap' | 'roughnessMap' | 'metalnessMap';
 
-const playPulseAnimation = (object: THREE.Object3D) => {
+const playPulseAnimation = (object: Object3D) => {
 
   if (object.userData.baseScale === undefined) {
     object.userData.baseScale = object.scale.x;
@@ -28,20 +37,20 @@ const playPulseAnimation = (object: THREE.Object3D) => {
   });
 };
 
-const preparePart = (model: THREE.Group, partName: string): THREE.Mesh[] => {
+const preparePart = (model: Group, partName: string): Mesh[] => {
   const container = model.getObjectByName(partName);
   if (!container) return [];
 
-  const meshes: THREE.Mesh[] = [];
+  const meshes: Mesh[] = [];
   container.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh) meshes.push(child as THREE.Mesh);
+    if ((child as Mesh).isMesh) meshes.push(child as Mesh);
   });
 
   if (meshes.length > 0) playPulseAnimation(model);
   return meshes;
 };
 
-export const resetPartToOriginal = (model: THREE.Group, partName: string) => {
+export const resetPartToOriginal = (model: Group, partName: string) => {
   const meshes = preparePart(model, partName);
 
   meshes.forEach((mesh) => {
@@ -51,14 +60,14 @@ export const resetPartToOriginal = (model: THREE.Group, partName: string) => {
     const clonedMaterial = original.clone();
     mesh.material = clonedMaterial;
 
-    if (clonedMaterial instanceof THREE.Material) {
+    if (clonedMaterial instanceof Material) {
       clonedMaterial.needsUpdate = true;
     }
   });
 };
 
 export const changePartTexture = async (
-  model: THREE.Group,
+  model: Group,
   partName: string,
   mapsConfig: Record<string, string>
 ) => {
@@ -68,7 +77,7 @@ export const changePartTexture = async (
   try {
     const loadTasks = Object.entries(mapsConfig).map(async ([mapType, path]) => {
       const texture = await textureManager.load(path);
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.wrapS = texture.wrapT = RepeatWrapping;
       texture.repeat.set(4, 4);
       texture.anisotropy = 16;
 
@@ -79,7 +88,7 @@ export const changePartTexture = async (
 
     meshes.forEach((mesh) => {
       const material = mesh.material;
-      if (material instanceof THREE.MeshStandardMaterial) {
+      if (material instanceof MeshStandardMaterial) {
         loadedMaps.forEach(({ mapType, texture }) => {
           material[mapType] = texture;
         });
@@ -92,13 +101,13 @@ export const changePartTexture = async (
   }
 };
 
-export const changePartColor = (model: THREE.Group, partName: string, newColor: string) => {
+export const changePartColor = (model: Group, partName: string, newColor: string) => {
   const meshes = preparePart(model, partName);
   if (!meshes) return;
 
-  const targetColor = new THREE.Color(newColor);
+  const targetColor = new Color(newColor);
   meshes.forEach((mesh) => {
-    if (mesh.material instanceof THREE.MeshStandardMaterial) {
+    if (mesh.material instanceof MeshStandardMaterial) {
       gsap.killTweensOf(mesh.material.color);
       gsap.to(mesh.material.color, {
         r: targetColor.r,

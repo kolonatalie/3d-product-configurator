@@ -1,10 +1,18 @@
-import * as THREE from 'three';
+import {
+  Group,
+  Box3,
+  Vector3,
+  Mesh,
+  Material,
+  MeshStandardMaterial
+} from 'three';
+
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 export class ModelLoader {
-  private loader: GLTFLoader;
-  private dracoLoader: DRACOLoader;
+  private readonly loader: GLTFLoader;
+  private readonly dracoLoader: DRACOLoader;
 
   constructor() {
     this.loader = new GLTFLoader();
@@ -13,11 +21,11 @@ export class ModelLoader {
     this.loader.setDRACOLoader(this.dracoLoader);
   }
 
-  private centerAndScale(model: THREE.Group, targetSize: number): number {
-    const box = new THREE.Box3().setFromObject(model);
-    const size = new THREE.Vector3();
+  private centerAndScale(model: Group, targetSize: number): number {
+    const box = new Box3().setFromObject(model);
+    const size = new Vector3();
     box.getSize(size);
-    const center = new THREE.Vector3();
+    const center = new Vector3();
     box.getCenter(center);
 
     const scaleFactor = targetSize / Math.max(size.x, size.y, size.z);
@@ -30,13 +38,13 @@ export class ModelLoader {
     });
     model.position.set(0, 0, 0);
 
-    const updatedBox = new THREE.Box3().setFromObject(model);
+    const updatedBox = new Box3().setFromObject(model);
     model.position.y = -updatedBox.min.y;
 
     return scaleFactor;
   }
 
-  public async loadModel(path: string, onProgress?: (progress: number) => void): Promise<{ model: THREE.Group, scale: number }> {
+  public async loadModel(path: string, onProgress?: (progress: number) => void): Promise<{ model: Group, scale: number }> {
     return new Promise((resolve, reject) => {
       this.loader.load(path, (gltf) => {
         const model = gltf.scene;
@@ -59,22 +67,22 @@ export class ModelLoader {
     });
   }
 
-  private setupModel(model: THREE.Group) {
+  private setupModel(model: Group) {
     model.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.userData.originalMaterial = (mesh.material as THREE.Material).clone();
+      if ((child as Mesh).isMesh) {
+        const mesh = child as Mesh;
+        mesh.userData.originalMaterial = (mesh.material as Material).clone();
         mesh.castShadow = true;
         mesh.receiveShadow = true;
 
-        if (mesh.material instanceof THREE.MeshStandardMaterial) {
+        if (mesh.material instanceof MeshStandardMaterial) {
 
           if (mesh.name.includes('wood')) {
             mesh.material.roughness = 0.5;
             mesh.material.metalness = 0;
           } else if (mesh.name.includes('cushion') || mesh.name.includes('fabric')) {
             mesh.material.roughness = 0.9;
-            mesh.material.metalness = 0.0;
+            mesh.material.metalness = 0;
           }
 
           if (mesh.material.map) {

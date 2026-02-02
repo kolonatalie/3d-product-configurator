@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
+import { Group } from 'three';
 import { SceneManager } from '@/engine/SceneManager';
 import { ModelLoader } from '@/engine/ModelLoader';
 import { Loader } from '@/components/UI/Loader/Loader';
@@ -9,14 +9,13 @@ import { gsap } from 'gsap';
 const sofaModelPath = '/models/sofa.glb';
 
 interface CanvasViewProps {
-  onLoad: (model: THREE.Group) => void;
+  onLoad: (model: Group) => void;
   onReady: (manager: SceneManager | null) => void;
 }
 
 export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneManagerRef = useRef<SceneManager | null>(null);
-
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,10 +29,8 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
     const loader = new ModelLoader();
 
     loader.loadModel(sofaModelPath, setProgress).then(({ model, scale }) => {
-
       model.scale.set(0, 0, 0);
       manager.add(model);
-
       setIsLoading(false);
 
       gsap.to(model.scale, {
@@ -48,15 +45,16 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
     });
 
     const handleResize = () => manager.resize();
-    window.addEventListener('resize', handleResize);
+    globalThis.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      globalThis.removeEventListener('resize', handleResize);
       manager.dispose();
       sceneManagerRef.current = null;
       onReady(null);
     };
-  }, [onLoad, onReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.canvasContainer}>
