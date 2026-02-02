@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import styles from './Header.module.scss';
+import { LogoIcon } from '../UI/Icons';
+
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +11,13 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo}><a href='https://github.com/kolonatalie' target='blank'>⭕️</a></div>
+      <div className={styles.logo}>
+        <a href='https://github.com/kolonatalie' target='blank'>
+          <LogoIcon
+            size={35}
+            className={styles.icon} />
+        </a>
+      </div>
       <nav className={`${styles.nav} ${isOpen ? styles.showLinks : ''}`}>
         <ul>
           <li><a href="https://github.com/kolonatalie/3d-product-configurator" target='blank'>Code</a></li>

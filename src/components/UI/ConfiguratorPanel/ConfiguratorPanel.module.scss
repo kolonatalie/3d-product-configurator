@@ -1,25 +1,27 @@
 .panel {
-  position: absolute;
-  right: 50%;
-  bottom: 20%;
+  z-index: $z-dropdown;
   gap: $space-md;
   width: 80%;
   padding: $space-lg;
+  margin: $space-sm auto;
   border-radius: calc($radius * 2);
   box-shadow: $dark-shadow;
-  transform: translate(50%, 50%);
 
   @include flex-center(row, center, start);
   @include glass;
 
 
   @include screen(tablet) {
+    position: absolute;
     right: 0;
-    bottom: 50%;
+    bottom: 45%;
     flex-direction: column;
-    align-items: flex-start;
-    width: 150px;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
     padding: $space-md;
+    margin: 0 $space-xs;
+    text-align: center;
     transform: translate(0, 50%);
   }
 }
@@ -36,6 +38,10 @@
   display: flex;
   flex-flow: row wrap;
   gap: $space-sm;
+
+  @include screen(tablet) {
+    justify-content: center;
+  }
 }
 
 .swatch,

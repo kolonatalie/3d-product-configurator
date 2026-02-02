@@ -24,3 +24,22 @@ export const ScreenshotIcon: React.FC<IconProps> = ({
       fillRule="nonzero" />
   </svg>
 );
+
+export const LogoIcon: React.FC<IconProps> = ({
+  size = 24,
+  color = 'currentColor',
+  className
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="-1 -1 18 18"
+    fill="none"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+      fill={color}
+      fillRule="nonzero" />
+  </svg>
+);

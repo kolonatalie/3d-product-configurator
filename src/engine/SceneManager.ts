@@ -20,10 +20,10 @@ export class SceneManager {
 
   constructor(canvas: HTMLCanvasElement) {
     this.scene = new THREE.Scene();
-    //this.scene.background = new THREE.Color('#e8f1f5');
+    // this.scene.background = new THREE.Color('#dbe6ea');
 
     this.camera = new THREE.PerspectiveCamera(
-      65,
+      40,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
       1000
@@ -84,7 +84,7 @@ export class SceneManager {
     this.controls.target.set(0, 0.5, 0);
     this.controls.update();
     this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.02;
+    this.controls.dampingFactor = 0.05;
 
     this.animate();
     this.initFloor();

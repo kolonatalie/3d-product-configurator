@@ -2,14 +2,13 @@
 @use '@/styles/mixins' as *;
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  padding: $space-xs $space-md;
+  height: 5rem;
+  padding: 0 $space-md;
   margin: 0 auto;
   text-align: center;
   opacity: 0.5;
-
-  @include flex-center;
 
   p {
     margin: 0;

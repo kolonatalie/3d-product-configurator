@@ -1,24 +1,28 @@
 @use '@/styles/variables' as *;
 @use '@/styles/mixins' as *;
 
+
 .appWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   min-height: 100vh;
   background:
     linear-gradient(235deg, $clr-primary-20, transparent 50%),
     linear-gradient(200deg, $clr-white, transparent 90%),
     linear-gradient(336deg, $clr-secondary, transparent 30%);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.container {
+
+main {
   position: relative;
-  display: flex;
-  flex: 1;
-  justify-content: center;
+  width: 100%;
   max-width: $max-width-content;
-  padding: $space-xs;
+  height: 100%;
 }
 
 .overlay {
@@ -32,7 +36,7 @@
   }
 
   p {
-    margin: $space-xs 0 0;
+    margin: $space-xs auto;
     opacity: 0.5;
   }
 }

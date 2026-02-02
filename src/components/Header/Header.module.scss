@@ -3,14 +3,17 @@ header {
   width: 100vw;
   max-width: $max-width-content;
   padding: $space-sm $space-xs;
+  margin-bottom: $space-sm;
 
   @include flex-center(row, space-between, center);
 }
 
 .logo {
-  font-size: calc($font-size-base * 2);
-  line-height: 0;
-  filter: hue-rotate(275deg);
+  .icon {
+    color: $clr-primary;
+    stroke: $clr-primary;
+    stroke-width: 0.035rem;
+  }
 }
 
 .nav {
