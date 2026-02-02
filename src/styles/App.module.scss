@@ -1,7 +1,3 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
-
-
 .appWrapper {
   position: relative;
   display: flex;
@@ -23,6 +19,7 @@ main {
   width: 100%;
   max-width: $max-width-content;
   height: 100%;
+  padding: 0 $space-xs;
 }
 
 .overlay {

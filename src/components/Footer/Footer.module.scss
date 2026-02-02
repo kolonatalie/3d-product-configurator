@@ -1,10 +1,7 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
 
 footer {
   position: fixed;
   bottom: 0;
-  height: 5rem;
   padding: 0 $space-md;
   margin: 0 auto;
   text-align: center;

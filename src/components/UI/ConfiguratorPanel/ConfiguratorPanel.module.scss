@@ -1,11 +1,15 @@
 .panel {
+  position: fixed;
+  right: 50%;
+  bottom: 1rem;
   z-index: $z-dropdown;
-  gap: $space-md;
-  width: 80%;
-  padding: $space-lg;
+  gap: $space-sm;
+  width: 90%;
+  padding: $space-sm;
   margin: $space-sm auto;
   border-radius: calc($radius * 2);
   box-shadow: $dark-shadow;
+  transform: translate(50%, 0);
 
   @include flex-center(row, center, start);
   @include glass;
@@ -37,7 +41,7 @@
 .grid {
   display: flex;
   flex-flow: row wrap;
-  gap: $space-sm;
+  gap: $space-xs;
 
   @include screen(tablet) {
     justify-content: center;
