@@ -25,7 +25,7 @@ export class SceneManager {
   private readonly controls: OrbitControls;
   private frameId: number | null = null;
   private readonly stats?: Stats;
-  
+
 
   constructor(canvas: HTMLCanvasElement) {
     this.scene = new Scene();
@@ -42,7 +42,7 @@ export class SceneManager {
       canvas,
       antialias: true,
       alpha: true,
-      powerPreference: "high-performance",
+      powerPreference: 'default',
     });
 
     this.renderer.setPixelRatio(Math.min(globalThis.devicePixelRatio, 2));
@@ -121,6 +121,9 @@ export class SceneManager {
     return this.renderer.domElement.toDataURL('image/png');
   }
 
+  public getMaxAnisotropy(): number {
+  return this.renderer.capabilities.getMaxAnisotropy();
+}
 
   private readonly animate = (): void => {
     this.stats?.begin();

@@ -13,8 +13,11 @@ import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 export class ModelLoader {
   private readonly loader: GLTFLoader;
   private readonly dracoLoader: DRACOLoader;
+  private readonly maxAnisotropy: number;
 
-  constructor() {
+  constructor(maxAnisotropy = 1) {
+    this.maxAnisotropy = maxAnisotropy;
+
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
     this.dracoLoader.setWorkerLimit(2);
@@ -25,31 +28,31 @@ export class ModelLoader {
 
   private setupModel(model: Group): void {
     model.traverse((child) => {
-      if ((child as Mesh).isMesh) {
+      if (!(child as Mesh).isMesh) return;
 
-        const mesh = child as Mesh;
-        const mat = mesh.material;
-        mesh.userData.originalMaterial = (mat as Material).clone();
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+      const mesh = child as Mesh;
+      const mat = mesh.material;
 
-        if (mat instanceof MeshStandardMaterial) {
+      mesh.userData.originalMaterial = (mat as Material).clone();
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
 
-          if (mesh.name.includes('wood')) {
-            mat.roughness = 0.5;
-            mat.metalness = 0;
-          } else if (mesh.name.includes('cushion') /*|| mesh.name.includes('fabric')*/) {
-            mat.roughness = 0.9;
-            mat.metalness = 0;
-          }
+      if (mat instanceof MeshStandardMaterial) {
+        if (mat.map) {
+          mat.map.anisotropy = Math.min(this.maxAnisotropy, 4);
+        }
 
-          if (mat.map) {
-            mat.map.anisotropy = 4;
-          }
+        if (mesh.name.includes('wood')) {
+          mat.roughness = 0.5;
+          mat.metalness = 0;
+        } else if (mesh.name.includes('cushion')) {
+          mat.roughness = 0.9;
+          mat.metalness = 0;
         }
       }
     });
   }
+
 
   public async loadModel(path: string, onProgress?: (p: number) => void): Promise<{ model: Group, scale: number }> {
     try {
@@ -63,7 +66,7 @@ export class ModelLoader {
       this.setupModel(model);
       const scale = this.centerAndScale(model, 3);
 
-      this.dracoLoader.dispose(); 
+      this.dracoLoader.dispose();
 
       return { model, scale };
     } catch (error) {

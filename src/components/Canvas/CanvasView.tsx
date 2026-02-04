@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Group } from 'three';
-import { SceneManager } from '@/engine/SceneManager';
+import { SceneManager as SceneManagerType } from '@/engine/SceneManager';
 import { Loader } from '@/components/UI/Loader/Loader';
 import styles from './CanvasView.module.scss';
 
@@ -8,37 +8,37 @@ const sofaModelPath = '/models/sofa_compressed.glb';
 
 interface CanvasViewProps {
   onLoad: (model: Group) => void;
-  onReady: (manager: SceneManager | null) => void;
+  onReady: (manager: SceneManagerType | null) => void;
 }
 
 export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneManagerRef = useRef<SceneManager | null>(null);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
+    let manager: SceneManagerType | null = null;
 
-    const initId = requestAnimationFrame(async () => {
+    const initScene = async () => {
+      await new Promise(resolve => setTimeout(resolve, 500));
       if (!canvasRef.current || !active) return;
 
-      const manager = new SceneManager(canvasRef.current);
-      sceneManagerRef.current = manager;
+      const { SceneManager } = await import('@/engine/SceneManager');
+      manager = new SceneManager(canvasRef.current);
       onReady(manager);
 
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      const { ModelLoader } = await import('@/engine/ModelLoader');
-      const loader = new ModelLoader();
-
       try {
+        manager.getMaxAnisotropy();
+
+        const { ModelLoader } = await import('@/engine/ModelLoader');
+        const loader = new ModelLoader();
+
         const { model, scale } = await loader.loadModel(sofaModelPath, (p) => {
           if (active) setProgress(p);
         });
 
         if (!active) return;
-
         model.scale.set(0, 0, 0);
         manager.add(model);
         setIsLoading(false);
@@ -56,25 +56,24 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
       } catch (error) {
         console.error("Model loading failed:", error);
       }
-    });
-
-    const handleResize = () => sceneManagerRef.current?.resize();
-    globalThis.addEventListener('resize', handleResize);
-
-    return () => {
-      active = false;
-      cancelAnimationFrame(initId);
-      globalThis.removeEventListener('resize', handleResize);
-      sceneManagerRef.current?.dispose();
-      sceneManagerRef.current = null;
-      onReady(null);
     };
-  }, [onLoad, onReady]);
 
-  return (
-    <div className={styles.canvasContainer}>
-      {isLoading && <Loader progress={progress} />}
-      <canvas ref={canvasRef} className={styles.canvas} />
-    </div>
-  );
+    initScene();
+
+  const handleResize = () => manager?.resize();
+  globalThis.addEventListener('resize', handleResize);
+
+  return () => {
+    active = false;
+    globalThis.removeEventListener('resize', handleResize);
+    manager?.dispose();
+  };
+}, [onLoad, onReady]);
+
+return (
+  <div className={styles.canvasContainer}>
+    {isLoading && <Loader progress={progress} />}
+    <canvas ref={canvasRef} className={styles.canvas} />
+  </div>
+);
 };
