@@ -27,6 +27,8 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
       sceneManagerRef.current = manager;
       onReady(manager);
 
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       const { ModelLoader } = await import('@/engine/ModelLoader');
       const loader = new ModelLoader();
 
@@ -34,6 +36,7 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
         const { model, scale } = await loader.loadModel(sofaModelPath, (p) => {
           if (active) setProgress(p);
         });
+
         if (!active) return;
 
         model.scale.set(0, 0, 0);
@@ -41,7 +44,6 @@ export const CanvasView: React.FC<CanvasViewProps> = ({ onLoad, onReady }) => {
         setIsLoading(false);
 
         const { gsap } = await import('gsap/gsap-core');
-
         gsap.to(model.scale, {
           x: scale,
           y: scale,

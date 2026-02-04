@@ -1,5 +1,5 @@
 import React, { useState, useCallback, lazy, Suspense } from 'react';
-import * as THREE from 'three';
+import type { Group } from 'three';
 import { SceneManager } from '@/engine/SceneManager';
 import { Loader } from './components/UI/Loader/Loader';
 import { Header } from './components/Header/Header';
@@ -10,10 +10,10 @@ const CanvasView = lazy(() => import('./components/Canvas/CanvasView').then(m =>
 const ConfiguratorPanel = lazy(() => import('./components/UI/ConfiguratorPanel/ConfiguratorPanel').then(m => ({ default: m.ConfiguratorPanel })));
 
 const App: React.FC = () => {
-  const [sofa, setSofa] = useState<THREE.Group | null>(null);
+  const [sofa, setSofa] = useState<Group | null>(null);
   const [sceneManager, setSceneManager] = useState<SceneManager | null>(null);
 
-  const handleModelLoad = useCallback((model: THREE.Group) => {
+  const handleModelLoad = useCallback((model: Group) => {
     setSofa(model);
   }, []);
 
@@ -25,18 +25,23 @@ const App: React.FC = () => {
           <h1>3D Sofa Configurator</h1>
           <p>Click and drag to rotate • Scroll to zoom</p>
         </div>
-        <Suspense fallback={<div className={styles.loaderOverlay}><Loader progress={0} /></div>}>
+
+        <Suspense fallback={<Loader progress={0} />}>
           <CanvasView
             onLoad={handleModelLoad}
             onReady={setSceneManager}
           />
-          {sofa && (
+        </Suspense>
+
+        {sofa && (
+          <Suspense fallback={null}>
             <ConfiguratorPanel
               model={sofa}
               sceneManager={sceneManager}
             />
-          )}
-        </Suspense>
+          </Suspense>
+        )}
+
       </main>
       <Footer />
     </div>
