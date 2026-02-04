@@ -2,7 +2,6 @@ import {
   Scene,
   PerspectiveCamera,
   WebGLRenderer,
-  Vector2,
   AmbientLight,
   DirectionalLight,
   PlaneGeometry,
@@ -17,11 +16,6 @@ import {
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-
 import Stats from 'stats.js';
 
 export class SceneManager {
@@ -30,8 +24,8 @@ export class SceneManager {
   private readonly renderer: WebGLRenderer;
   private readonly controls: OrbitControls;
   private frameId: number | null = null;
-  private readonly composer: EffectComposer;
   private readonly stats?: Stats;
+  
 
   constructor(canvas: HTMLCanvasElement) {
     this.scene = new Scene();
@@ -56,28 +50,15 @@ export class SceneManager {
 
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 0.65;
+    this.renderer.toneMappingExposure = 0.75;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = PCFSoftShadowMap;
 
     const pmremGenerator = new PMREMGenerator(this.renderer);
-    this.scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
-
-    this.composer = new EffectComposer(this.renderer);
-
-    const renderPass = new RenderPass(this.scene, this.camera);
-    this.composer.addPass(renderPass);
-
-    const bloomPass = new UnrealBloomPass(
-      new Vector2(canvas.clientWidth, canvas.clientHeight),
-      0.1, // Strength
-      0.3,  // Radius
-      0.97  // Threshold
-    );
-    this.composer.addPass(bloomPass);
-
-    const outputPass = new OutputPass();
-    this.composer.addPass(outputPass);
+    const roomEnv = new RoomEnvironment();
+    this.scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
+    roomEnv.dispose();
+    pmremGenerator.dispose();
 
     const isDebug = new URLSearchParams(globalThis.location.search).get('debug') === 'true';
 
@@ -91,39 +72,37 @@ export class SceneManager {
     }
 
     this.initLights();
+
     this.controls = new OrbitControls(this.camera, canvas);
     this.controls.target.set(0, 0.5, 0);
-    this.controls.update();
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
+    this.controls.update();
 
     this.animate();
     this.initFloor();
   }
 
-  private initLights() {
-    const ambientLight = new AmbientLight('#ffffff', 0.1);
+  private initLights(): void {
+    const ambientLight = new AmbientLight('#ffffff', 0.2);
     this.scene.add(ambientLight);
 
-    const sunLight = new DirectionalLight('#ffffff', 0.5);
+    const sunLight = new DirectionalLight('#ffffff', 0.8);
     sunLight.position.set(5, 8, 5);
     sunLight.castShadow = true;
 
-    sunLight.shadow.mapSize.width = 1024;
-    sunLight.shadow.mapSize.height = 1024;
-
+    sunLight.shadow.mapSize.set(512, 512);
     sunLight.shadow.camera.left = -3;
     sunLight.shadow.camera.right = 3;
     sunLight.shadow.camera.top = 3;
     sunLight.shadow.camera.bottom = -3;
-
-    sunLight.shadow.radius = 10;
-    sunLight.shadow.blurSamples = 25;
+    sunLight.shadow.radius = 4;
+    sunLight.shadow.blurSamples = 4;
 
     this.scene.add(sunLight);
   }
 
-  private initFloor() {
+  private initFloor(): void {
     const planeGeometry = new PlaneGeometry(20, 20);
     const planeMaterial = new ShadowMaterial({
       opacity: 0.1,
@@ -138,24 +117,24 @@ export class SceneManager {
   }
 
   public takeScreenshot(): string {
-    this.composer.render();
+    this.renderer.render(this.scene, this.camera);
     return this.renderer.domElement.toDataURL('image/png');
   }
 
 
-  private readonly animate = () => {
+  private readonly animate = (): void => {
     this.stats?.begin();
     this.frameId = globalThis.requestAnimationFrame(this.animate);
     this.controls.update();
-    this.composer.render();
+    this.renderer.render(this.scene, this.camera);
     this.stats?.end();
   };
 
-  public add(object: Object3D) {
+  public add(object: Object3D): void {
     this.scene.add(object);
   }
 
-  public resize() {
+  public resize(): void {
     const parent = this.renderer.domElement.parentElement;
     if (!parent) return;
 
@@ -166,10 +145,9 @@ export class SceneManager {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
-    this.composer.setSize(width, height);
   }
 
-  public dispose() {
+  public dispose(): void {
     if (this.frameId) globalThis.cancelAnimationFrame(this.frameId);
 
     this.stats?.dom.remove();
@@ -187,7 +165,7 @@ export class SceneManager {
 
     this.controls.dispose();
     this.renderer.dispose();
-    this.scene.clear();
     this.scene.environment?.dispose();
+    this.scene.clear();
   }
 }

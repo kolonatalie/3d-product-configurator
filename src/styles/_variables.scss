@@ -1,16 +1,16 @@
 // --- Colors ---
-$clr-primary: oklch(60% 0.17 307deg);
-$clr-secondary: oklch(86% 0.08 225deg);
-$clr-bg: oklch(87% 0.01 240deg);
-$clr-text: oklch(20% 0.02 240deg);
-$clr-white: oklch(100% 0 0deg);
-$clr-black: oklch(15% 0 0deg);
-$clr-primary-20: oklch(60% 0.17 307deg / 0.2);
+$clr-primary: #9b5fce;
+$clr-secondary: #97ddf9;
+$clr-bg: #cfd5da;
+$clr-text: #0e171e;
+$clr-white: #fff;
+$clr-black: #0b0b0b;
+$clr-primary-20: #9b5fce33;
 
 
 // --- Shadows --- 
-$light-shadow: 0 5px 15px oklch(0% 0 0deg / 0.1);
-$dark-shadow: 0 10px 25px oklch(0% 0 0deg / 0.2);
+$light-shadow: 0 5px 15px #0000001a;
+$dark-shadow: 0 10px 25px #0003;
 
 // --- Spacing & Layout ---
 $max-width-content: 1300px;

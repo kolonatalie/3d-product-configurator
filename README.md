@@ -1,4 +1,3 @@
-[![3D Sofa Configurator](/src/assets/demo-sofa.gif)](https://3d-sofa-configurator.vercel.app)
 # 3D Sofa Configurator | [Live Demo](https://3d-sofa-configurator.vercel.app)
 
 ![Three.js](https://img.shields.io/badge/Three.js-20232A?style=for-the-badge&logo=threejs&logoColor=white)
@@ -10,6 +9,8 @@
 
 
 A high-performance, photorealistic 3D product customizer built with React, Three.js, and TypeScript. It features a modular 3D engine, PBR materials, and real-time performance optimization.
+
+[![3D Sofa Configurator](/src/assets/demo-sofa.gif)](https://3d-sofa-configurator.vercel.app)
 
 ## Features
 - **Real-time Customization:** Swap textures (fabric) and colors (wood) instantly using a custom PBR-ready system.
