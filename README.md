@@ -14,8 +14,8 @@ A high-performance, photorealistic 3D product customizer built with React, Three
 
 ## Features
 - **Real-time Customization:** Swap textures (fabric) and colors (wood) instantly using a custom PBR-ready system.
-- **Photorealistic Rendering:** Powered by RoomEnvironment, ACES Filmic tone mapping, and Bloom post-processing.
-- **Performance First:** Maintains stable 60 FPS with only 1 Draw Call for the main model.
+- **Photorealistic Rendering:** Powered by RoomEnvironment and ACES Filmic tone mapping.
+- **Optimized Scene Graph:** Minimized Draw Calls through material sharing and geometry batching.
 - **Memory Efficiency:** Strict disposal of geometries and materials to prevent memory leaks.
 - **Screenshot Engine:** Built-in tool to capture customized designs.
 
